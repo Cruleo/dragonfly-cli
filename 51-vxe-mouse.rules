@@ -1,0 +1,3 @@
+# VGN 4K Dongle
+SUBSYSTEM=="usb", ATTR{idVendor}=="3554", ATTR{idProduct}=="f505", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl", SYMLINK+="vxe%n"
+KERNEL=="hidraw*", ATTRS{idVendor}=="3554", ATTRS{idProduct}=="f505", MODE="0660", GROUP="plugdev", TAG+="uaccess", TAG+="udev-acl"
