@@ -45,9 +45,7 @@ func main() {
 
 	// Set auto detach to true to automatically detach and attach kernel drivers
 	errorVar := dev.SetAutoDetach(true)
-	if errorVar != nil {
-		log.Fatalf("Couldn't set auto detach on")
-	}
+	checkError(errorVar)
 
 	// Get active config that we want to change settings for
 	cfg := getActiveConfig()
@@ -82,6 +80,12 @@ func main() {
 
 }
 
+func checkError(err error) {
+	if err != nil {
+		log.Fatalln("Error:", err.Error())
+	}
+}
+
 func is_polling_rate_valid() bool {
 	switch polling_rate {
 	case 125, 250, 500, 1000, 2000, 4000:
@@ -113,42 +117,30 @@ func openDevice() {
 	ctx := gousb.NewContext()
 	defer ctx.Close()
 	product_id_int, err := strconv.ParseUint(product_id, 16, 16)
-	if err != nil {
-		log.Fatalf("Couldn't convert Product ID to int")
-	}
+	checkError(err)
 	device, err := ctx.OpenDeviceWithVIDPID(0x3554, gousb.ID(product_id_int))
-	if err != nil {
-		log.Fatalf("Couldn't open device with VID %x and PID %x", 0x3554, product_id)
-	}
+	checkError(err)
 	dev = device
 }
 
 func getActiveConfig() *gousb.Config {
 	cfgNum, err := dev.ActiveConfigNum()
-	if err != nil {
-		log.Fatalf("Couldn't get active config num")
-	}
+	checkError(err)
 	cfg, err := dev.Config(cfgNum)
-	if err != nil {
-		log.Fatalf("Couldn't get config")
-	}
+	checkError(err)
 	return cfg
 }
 
 func sendHidReport(data []byte) int {
 	response, err := dev.Control(0x21, 0x09, 0x208, 1, data)
-	if err != nil {
-		log.Fatalf("Error sending control")
-	}
+	checkError(err)
 	return response
 }
 
 func claimInterfacesForConfig(cfg *gousb.Config) {
 	for _, iface := range cfg.Desc.Interfaces {
 		intf, err := cfg.Interface(iface.Number, 0)
-		if err != nil {
-			log.Fatalf("Failed to obtain interface")
-		}
+		checkError(err)
 		interfaceArray = append(interfaceArray, intf)
 	}
 }
