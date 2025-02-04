@@ -1,7 +1,7 @@
-# draGOnfly-cli
+# draGonfly
 A Golang CLI tool to change polling rate and debounce setting of VGN/VXE Dragonfly mice using the 1K or 4K dongles
 
-It is a clone of my Python script, [dragonpy-cli](https://github.com/Cruleo/dragonpy-cli) but written in Golang as a learning experience.
+It is a clone of my Python script, [dragonpy-cli](https://github.com/nbanea/dragonpy) but written in Golang as a learning experience.
 
 Please note that this has only been tested on Linux and on a VXE Dragonfly R1 Pro along with a 4K and 1K dongle. Your mileage might vary.
 
